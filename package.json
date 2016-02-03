@@ -1,8 +1,8 @@
 {
-  "name": "iot-vizconf-angular",
+  "name": "iotvizconf",
   "version": "1.0.0",
-  "description": "iot-vizconf-angular",
-  "main": "app.js",
+  "description": "iotvizconf",
+  "main": "server.js",
   "dependencies": {
     "express": "^4.13.3",
     "express-http-proxy": "^0.6.0",
@@ -15,8 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://cto-github.cisco.com/vseereer/iot-vizconf-angular.git"
+    "url": "git+https://github.com/CiscoDevNet/iotvizconf.git"
   },
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "iotvizconf"
+  ],
+  "author": "Varun Seereeram",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CiscoDevNet/iotvizconf/issues"
+  },
+  "homepage": "https://github.com/CiscoDevNet/iotvizconf#readme"
 }

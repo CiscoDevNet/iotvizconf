@@ -1,0 +1,30 @@
+{
+  "name": "iotvizconf",
+  "homepage": "https://github.com/CiscoDevNet/iotvizconf",
+  "authors": [
+    "Varun Seereeram <vseereer@cisco.com>"
+  ],
+  "description": "iotvizconf",
+  "main": "server.js",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "iotvizconf"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-leaflet-directive": "~0.10.0",
+    "angular-material": "~0.11.4",
+    "angular-route": "~1.4.7",
+    "bootstrap": "~3.3.5"
+  }
+}
