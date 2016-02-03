@@ -1,0 +1,47 @@
+<md-dialog ng-cloak aria-label="dmo dialog">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 style="color: white">
+                    Configuring:
+                    <md-icon md-svg-src="resources/moddedtruck.svg" aria-label="Close dialog"></md-icon> ID: {{DmoDialogCtrl.dmo.dmoNodeId}}
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="DmoDialogCtrl.cancel()" aria-label="close button">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="max-width:800px;max-height:810px; ">
+            <div class="md-dialog-content">
+                <md-content layout-padding>
+                    <form name="dmoConfigForm">
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <label>
+                                    <md-icon md-svg-src="resources/moddedtruck.svg" aria-label="Close dialog" class="truckDialog"></md-icon>
+                                    DMO Node ID
+                                </label>
+                                <input ng-model="DmoDialogCtrl.dmo.dmoNodeId" disabled>
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label>
+                                    Name
+                                </label>
+                                <input ng-model="DmoDialogCtrl.dmo.name">
+                            </md-input-container>
+                        </div>
+                    </form>
+                </md-content>
+
+            </div>
+        </md-dialog-content>
+        <md-progress-linear md-mode="indeterminate" ng-show="DmoDialogCtrl.waiting"></md-progress-linear>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="DmoDialogCtrl.updateConfig();" style="margin-right:20px;" class="md-accent">
+                Update
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

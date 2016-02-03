@@ -1,0 +1,54 @@
+html,body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#next-app {
+    overflow: hidden;
+}
+
+.leaflet-control-attribution.leaflet-control {
+    display:none;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.truckDialog {
+    width: 16px;
+    height: 16px;
+}
+.marker {
+    height: 25px;
+    width: 35px;
+}
+
+.white {
+    color: white;
+}
+
+.offWhite {
+    background-color: #F9FCFD;
+}
+
+span.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.n-topology.n-topology-blue {
+    background-color: white;
+}
+
+.n-topology-nav-setting-icon {
+    display:none;
+}
+
+
+.md-dialog-container.ng-scope {
+    z-index: 10000000;
+}

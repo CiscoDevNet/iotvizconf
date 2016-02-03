@@ -1,0 +1,16 @@
+<md-progress-linear md-mode="indeterminate" ng-show="DmoCtrl.waiting"></md-progress-linear>
+<md-card  ng-repeat="dmo in DmoCtrl.nodes | orderBy: 'dmoNodeId'">
+    <md-card-content>
+        <h5>{{dmo.name}}</h5>
+        <h2 class="md-title">
+            <md-icon md-svg-src="resources/moddedtruck.svg" aria-label="Close dialog"></md-icon>
+            ID: {{dmo.dmoNodeId}}
+        </h2>
+        <br/>
+        <md-divider></md-divider>
+        <md-button class="md-actions md-accent" ng-click="AppCtrl.openDmoDialog(dmo)" flex-sm="100" flex-md="100" flex-gt-md="auto">
+            Configure
+        </md-button>
+        <md-button class="md-actions md-primary " ng-click="AppCtrl.openRight(); SensorCtrl.loadSensors(dmo);">View Sensors</md-button>
+    </md-card-content>
+</md-card>

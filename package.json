@@ -1,0 +1,22 @@
+{
+  "name": "iot-vizconf-angular",
+  "version": "1.0.0",
+  "description": "iot-vizconf-angular",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.13.3",
+    "express-http-proxy": "^0.6.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://cto-github.cisco.com/vseereer/iot-vizconf-angular.git"
+  },
+  "author": "",
+  "license": "ISC"
+}

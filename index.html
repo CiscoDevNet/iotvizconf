@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="iotvizconf">
+<head>
+    <title>IoT VizConf</title>
+</head>
+<body ng-controller="AppController as AppCtrl" ng-cloak>
+    <link rel="stylesheet" href="lib/next/css/next.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
+
+    <script src="bower_components/leaflet/dist/leaflet.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+
+    <script src="lib/lodash.min.js"></script>
+
+    <md-toolbar class="md-theme-light">
+        <h2 class="md-toolbar-tools white float-left">
+            <a href="#" class="md-raised" id="openBtn">
+                <i class="glyphicon glyphicon-align-justify md-primary" ng-click="AppCtrl.toggleLeft()" hide-gt-md></i>
+            </a>
+            <span style="width:10px"></span>
+            <span style="margin-right: 5px">IoT VizConf</span>
+            <span flex></span>
+            <div layout="column" layout-align="center center">
+                <md-switch class="md-accent md-block" aria-label="Switch No Ink" ng-model="AppCtrl.geo">
+                    Geographical
+                </md-switch>
+            </div>
+            <span style="width:10px"></span>
+        </h2>
+    </md-toolbar>
+    <md-content layout="column" style="height:93%;" ng-controller="SensorController as SensorCtrl" ng-cloak>
+        <section layout="row" flex>
+            <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+                <md-toolbar class="md-theme-indigo">
+                    <h1 class="md-toolbar-tools white">
+                        <span style="width:10px"></span>
+                        DMO Devices
+                    </h1>
+                </md-toolbar>
+                <md-content layout-padding class="offWhite">
+                        <dmo-card></dmo-card>
+                </md-content>
+            </md-sidenav>
+            <md-content flex id="next-app" ng-hide="AppCtrl.geo"></md-content>
+            <leaflet lf-center="AppCtrl.center" height="600px" width="1080px" id="map" ng-if="AppCtrl.geo" markers="AppCtrl.markers"></leaflet>
+            <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+                <md-toolbar class="md-theme-indigo" md-scroll-shrink>
+                    <div class="md-toolbar-tools white">
+                        <md-icon md-svg-src="resources/moddedtruck.svg" aria-label="Close dialog"></md-icon> <span style="font-size: smaller">{{SensorCtrl.obdVendorString}}</span> <span flex></span>
+                    </div>
+                </md-toolbar>
+                <md-content layout-padding class="offWhite">
+                    <sensor-card></sensor-card>
+                </md-content>
+            </md-sidenav>
+        </section>
+    </md-content>
+
+    <script src="lib/next/js/next.js"></script>
+
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <script src="js/config.js"></script>
+    <script src="js/processor.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>

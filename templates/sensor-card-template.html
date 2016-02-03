@@ -1,0 +1,14 @@
+<md-progress-linear md-mode="indeterminate" ng-show="SensorCtrl.waiting"></md-progress-linear>
+<md-card  ng-repeat="sensor in SensorCtrl.targetData | orderBy: 'pid'">
+    <md-card-content>
+        <h2 class="md-title" ng-if=sensor.description>
+            <div class="glyphicon glyphicon-dashboard"></div>
+            {{sensor.description}}
+        </h2>
+        <label class="md-subheader" ng-if=sensor.pid>PID: {{sensor.pid}}</label>
+	    <label class="md-subheader" ng-if=sensor.http_addr>IP: {{sensor.http_addr}}</label>
+        <br/>
+        <md-divider></md-divider>
+        <md-button class="md-actions md-primary" ng-click="AppCtrl.openSensorDialog(sensor, SensorCtrl.targetDmoNodeId)" flex-sm="100" flex-md="100" flex-gt-md="auto">Set Policy</md-button>
+    </md-card-content>
+</md-card>

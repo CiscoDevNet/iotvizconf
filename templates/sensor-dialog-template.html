@@ -1,0 +1,66 @@
+<md-dialog ng-cloak aria-label="sensor dialog">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 style="color: white">
+                    Setting Policy For 
+                    <div class="glyphicon glyphicon-dashboard"></div>
+                    PID {{SensorDialogCtrl.sensor.pid}} at
+                    <md-icon md-svg-src="resources/moddedtruck.svg" aria-label="Close dialog"></md-icon>
+                    {{SensorDialogCtrl.dmoNodeId}}
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="SensorDialogCtrl.cancel()" aria-label="close button">
+                    <div class="glyphicon glyphicon-remove"></div>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="max-width:800px;max-height:810px; ">
+            <div class="md-dialog-content">
+                <md-content layout-padding>
+                    <form name="sensorConfigForm">
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <label>
+                                    <div class="glyphicon glyphicon-dashboard"></div>
+                                    PID IP
+                                </label>
+                                <input ng-model="SensorDialogCtrl.sensorConfigData.ip" disabled>
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label>
+                                    <md-icon md-svg-src="resources/moddedtruck.svg" aria-label="Close dialog" class="truckDialog"></md-icon>
+                                    DMO Node ID
+                                </label>
+                                <input ng-model="SensorDialogCtrl.sensorConfigData.dmoNodeId" disabled>
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label>
+                                    Data Collector IP
+                                </label>
+                                <input ng-model="SensorDialogCtrl.sensorConfigData.dest">
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label>
+                                    Timer
+                                </label>
+                                <input ng-model="SensorDialogCtrl.sensorConfigData.timer">
+                            </md-input-container>
+                            <md-switch class="md-primary md-block" md-no-ink aria-label="Switch No Ink" ng-model="SensorDialogCtrl.sensorConfigData.sendData">
+                                Send Data
+                            </md-switch>
+                        </div>
+                    </form>
+                </md-content>
+            </div>
+        </md-dialog-content>
+        <md-progress-linear md-mode="indeterminate" ng-show="SensorDialogCtrl.waiting"></md-progress-linear>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-progress-circular md-mode="indeterminate" md-diameter="20px" ng-show="SensorDialogCtrl.waitingPreConfig"></md-progress-circular>
+            <md-button ng-click="SensorDialogCtrl.updatePolicies();" ng-disabled='SensorDialogCtrl.waitingPreConfig' style="margin-right:20px;" class="md-accent">
+                Update Policies
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
