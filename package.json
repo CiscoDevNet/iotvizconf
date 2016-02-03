@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/CiscoDevNet/iotvizconf/issues"
   },
-  "homepage": "https://github.com/CiscoDevNet/iotvizconf#readme"
+  "homepage": "https://github.com/CiscoDevNet/iotvizconf#readme",
+  "scripts": {
+    "postinstall": "bower install"
+  }
 }

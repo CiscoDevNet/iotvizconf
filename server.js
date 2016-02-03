@@ -8,7 +8,7 @@ var path = require('path');
 var express = require('express');
 var app = express();
 
-app.use('/api', proxy('http://localhost', {
+app.use('/api', proxy('http://ctao-sdn-03', {
     port: 8181,
     forwardPath: function(req, res) {
         return url.parse(req.url).path;
