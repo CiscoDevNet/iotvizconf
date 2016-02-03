@@ -71,6 +71,14 @@ In summary ODL is an application platform abstracting the complexities of a netw
 - Leverages the open source NeXt UI framework for topology visualization
 - Source code in HTML5/CSS/Javascript, NeXt and node js
 
+## Instructions:
+
+- Clone repository ('git clone https://github.com/CiscoDevNet/iotvizconf.git')
+- Change into directoty ('cd iotvizconf')
+- Run 'npm install' inside directory
+- Run 'node server.js'
+- Visit 'localhost:8000' in your browser
+
 ### References
 
 - [https://wiki.opendaylight.org/view/IoTDM:Main](https://wiki.opendaylight.org/view/IoTDM:Main)
