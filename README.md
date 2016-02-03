@@ -21,7 +21,7 @@ In the example shown below, the devices are gateways running Cisco's Data In Mot
 
 ### Project demo Link:
 
-[https://cto-github.cisco.com/vseereer/iotvizconf](https://cto-github.cisco.com/vseereer/iotvizconf)
+[https://github.com/CiscoDevNet/iotvizconf](https://github.com/CiscoDevNet/iotvizconf)
 
 ### Social Tags:
 
