@@ -22,8 +22,10 @@
             // the setGPS function is called when the data is loaded from the HTTP request
             // it processes that data and pushes it into an array for the leaflet directive
             this.setGps = function(nodes) {
-                for (var x=0;x<nodes.length;x++) {
-                    if (nodes[x]['latitude'] && nodes[x]['longitude']) {
+                for (var x=0;x<nodes.length;x++) { //for every node...
+                    if (nodes[x]['latitude'] && nodes[x]['longitude']) { //if a lat % long exists...
+
+                        //push object into 'markers' array
                         this.markers.push({
                             lat: parseFloat(nodes[x]['latitude']),
                             lng: parseFloat(nodes[x]['longitude']),
@@ -39,8 +41,9 @@
             }
         })
 
+        //toast service which supplies push notification
         .service('toastService', function($mdToast) {
-            this.showToast = function(content) {
+            this.showToast = function(content) { //showToast method displays the notification
                 var toast = $mdToast.simple()
                     .content(content)
                     .action('OK')
@@ -49,7 +52,10 @@
             }
         })
 
+        //httpService provides methods which carry out http requests for the app.
         .service('httpService', function(dataService, gpsService, toastService, $http, $log) {
+
+            //does a POST with configuration of the dmo
             this.updateDmoConfig = function(dmo, cancelCallback) {
                 $http.post(nameConfigUrl,
                     '{"input": { "dmo-node-id": "'+dmo.dmoNodeId+'", "name": "'+dmo.name+'", "config-oper": CONFIG, "operation" : "CREATE-UPDATE" }}',
@@ -79,8 +85,9 @@
                     cancelCallback(false);
                 });
             };
+
+            //does an HTTP GET to retrieve pre-configured data (from past policy settings) and fills in that data.
             this.getSensorPreConfigData = function(sensorConfigData, finishedRetrievingPreConfigData) {
-                //does an HTTP GET to retrieve pre-configured data (from past policy settings) and fills in that data.
                 $http.get(dmoConfigUrl+'/node/'+sensorConfigData.dmoNodeId, {
                     method: 'GET',
                     headers: {
@@ -107,8 +114,8 @@
                 });
             };
 
+            //does an HTTP POST of configured policy data
             this.updatePolicies = function(sensorConfigData, finishedUpdatingSuccessfully) {
-                //does an HTTP POST of configured policy data
                 $http.post(obdConfigUrl,
                     '{"input": { "dmo-node-id": "'+sensorConfigData.dmoNodeId+'", "pid": "'+sensorConfigData.pid+'", "data-collector-ip-address": "'+sensorConfigData.dest+'", "timer" :"'+sensorConfigData.timer+'", "send-data" : "'+sensorConfigData.sendData+'", "operation" : "CREATE-UPDATE" }}',
                     {
@@ -160,11 +167,12 @@
                             //    node.dmoNodeIdFloat = parseFloat(node.dmoNodeId);
                             //});
                         }
+                        //sets GPS location
                         gpsService.setGps(dataService.nodes);
-                        finishedLoadingDmoData();
+                        finishedLoadingDmoData(); //callback
                     }, function errorCallback(response) {
                         $log.error(response); // log an error it unsuccessful
-                        finishedLoadingDmoData();
+                        finishedLoadingDmoData(); //callback
                     });
                 }, function errorCallback(response) {
                     $log.error(response); // log an error it unsuccessful
@@ -174,17 +182,17 @@
             };
         })
         .service('dataService', function() {
-            nx.graphic.Icons.registerIcon("truck", "resources/moddedtruck.svg", 45, 45);
-            this.topo = new nx.graphic.Topology({
+            nx.graphic.Icons.registerIcon("truck", "resources/moddedtruck.svg", 45, 45); //registers truck icon
+            this.topo = new nx.graphic.Topology({ //creates topology with configuration
                 adaptive:true,
                 scalable: true,
-                theme:'blue', //...
+                theme:'blue', //set theme to blue
                 enableGradualScaling:true,
                 nodeConfig: {
-                    label: 'model.label',
-                    scale: 'model.scale',
-                    color: '#00bcd4',
-                    iconType:function(vertex) {
+                    label: 'model.label', //set label
+                    scale: 'model.scale', //set scale
+                    color: '#00bcd4', //set color
+                    iconType:function(vertex) { //assigns icon type
                         if (vertex.get("name") === anchorName) {
                             return 'host'
                         } else {
@@ -197,19 +205,19 @@
                     linkType: 'parallel'
                 },
                 showIcon: true,
-                dataProcessor:'force',
+                dataProcessor:'force', //auto layout, with 'force'
                 autoLayout: true,
                 enableSmartNode: true
             });
             this.nxApp = new nx.ui.Application;
-            this.nxApp.container(document.getElementById('next-app'));
+            this.nxApp.container(document.getElementById('next-app')); //assigns element to div with id 'next-app'
             this.topologyData = undefined;
             this.names = undefined;
             this.sensorData = undefined;
             this.nodes = [];
-            this.setTopologyData = function(topoData) {
+            this.setTopologyData = function(topoData) { //sets topology data
                 this.topologyData = topoData;
-                angular.copy(_.slice(this.topologyData.nodes,1), this.nodes); //removes anchor
+                angular.copy(_.slice(this.topologyData.nodes,1), this.nodes); //removes anchor by copying data starting from index '1' of the array
                 this.topo.data(this.topologyData); //sets data to the NeXt topology
                 this.topo.attach(this.nxApp); // attaches the NeXt topology
             };
@@ -225,9 +233,9 @@
                 vm.markers = gpsService.markers;
 
 
-                dataService.topo.on('topologyGenerated', function() {
-                    dataService.topo.tooltipManager().showNodeTooltip(false);
-                    dataService.topo.tooltipManager().showLinkTooltip(false);
+                dataService.topo.on('topologyGenerated', function() { //when topology is generated...
+                    dataService.topo.tooltipManager().showNodeTooltip(false); //disable tooltip (node)
+                    dataService.topo.tooltipManager().showLinkTooltip(false); //disable tooltip (link)
                     dataService.topo.on('clickNode',function(topo,node) {
                         console.log(node.model().get());
                         if(!node.model().get().dmoNodeId) {
@@ -235,7 +243,7 @@
                         }
                     });
                     window.addEventListener('resize', function(){
-                        dataService.topo.adaptToContainer();
+                        dataService.topo.adaptToContainer(); //adapt to container on window resize...
                     });
                 });
 
@@ -323,6 +331,7 @@
                                     }
                                 };
 
+                                //retrieve sensor's pre-configuration data
                                 httpService.getSensorPreConfigData(vm.sensorConfigData, vm.finishedRetrievingPreConfigData);
 
                                 // function called when user clicks the 'update' policy button
@@ -330,6 +339,7 @@
                                     vm.waiting = true;
                                     $log.info(vm.sensorConfigData);
 
+                                    //calls http service to update policies. Callback passed (finishedUpdatingSuccessfully)
                                     httpService.updatePolicies(vm.sensorConfigData, vm.finishedUpdatingSuccessfully);
                                 };
 
@@ -355,7 +365,7 @@
                         vm.waiting = false;
                         vm.targetData = data;
                     };
-                    httpService.getDmoData(vm.finishedLoadingDmoData);
+                    httpService.getDmoData(vm.finishedLoadingDmoData); //retrieves dmo data
                 },
                 controllerAs: 'DmoCtrl'
             }
@@ -368,18 +378,21 @@
             }
         })
 
+        //Controller to manage sensors.
         .controller('SensorController',['$log','dataService', function($log, dataService) {
             var vm = this;
             vm.waiting = false;
             vm.targetDmoNodeId = "";
             vm.obdVendorString = "";
+
             // function called when the user clicks 'view sensors'
             vm.loadSensors = function(dmo) {
                 var dmoNodeId = dmo.dmoNodeId;
+                //searches topologyData nodes and matches dmo ID
                 var sensorData= _.result(_.find(dataService.topologyData.nodes, { 'dmoNodeId': dmoNodeId }), 'obd-pids');
-                if (sensorData) {
+                if (sensorData) { //if there was a match..
                     $log.log('Success! Sensor data loaded!');
-                    vm.targetData = processSensorData(sensorData);
+                    vm.targetData = processSensorData(sensorData); //set targetData
                     vm.targetDmoNodeId = dmoNodeId;
                     vm.obdVendorString = dmo.obdVendorString;
                 } else {
