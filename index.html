@@ -40,11 +40,14 @@
                 <md-toolbar class="md-theme-indigo">
                     <h1 class="md-toolbar-tools white">
                         <span style="width:10px"></span>
-                        DMO Devices
+                        <md-switch ng-model="AppCtrl.groupsMode" ng-click="AppCtrl.closeRight()">{{AppCtrl.groupsMode?'Groups':'DMO Devices'}}</md-switch>
                     </h1>
                 </md-toolbar>
-                <md-content layout-padding class="offWhite">
+                <md-content layout-padding class="offWhite" ng-hide="AppCtrl.groupsMode">
                         <dmo-card></dmo-card>
+                </md-content>
+                <md-content layout-padding class="offWhite" ng-if="AppCtrl.groupsMode">
+                    <group-card></group-card>
                 </md-content>
             </md-sidenav>
             <md-content flex id="next-app" ng-hide="AppCtrl.geo"></md-content>

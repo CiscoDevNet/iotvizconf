@@ -1,0 +1,13 @@
+<md-button ng-click="GroupCtrl.addGroup()" style="width:95%;" class="md-raised">Add Group</md-button>
+<md-card ng-repeat="group in GroupCtrl.groups">
+    <md-card-content>
+        <h5>{{group.name}}</h5>
+        <h2 class="md-title">
+            Name: {{group.name}}
+        </h2>
+        <br/>
+        <md-divider></md-divider>
+        <md-button class="md-actions md-primary " ng-click="AppCtrl.closeRight(); GroupCtrl.deleteGroup(group)">Delete</md-button>
+        <md-button class="md-actions md-primary " ng-click="AppCtrl.openRight(); SensorCtrl.loadSensorsForGroup(group);">View Sensors</md-button>
+    </md-card-content>
+</md-card>

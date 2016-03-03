@@ -180,6 +180,42 @@
                     finishedLoadingDmoData()
                 });
             };
+
+            this.getGroupData = function(callback) {
+                $http.get(groupsUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": "Basic " + btoa(username + ":" + password)
+                    }
+                }).then(function successCallback(response) {
+                    //TODO: Parse response data (response.data) and complete the three TODOs below
+                    //callback(); //TODO: Uncomment and pass 'Parsed response' into here
+                }, function errorCallback(response) {
+                    $log.error(response); // log an error if unsuccessful
+                    //callback(); //TODO: Uncomment
+                });
+                // Hardcoding 4 groups
+                callback([{name:'group1'},{name:'group2'},{name:'group3'},{name:'group4'}]); //TODO: DELETE this line
+            };
+
+            this.addGroupToODL = function(group, finishedUpdatingSuccessfully) {
+                $http.post(newGroupUrl,
+                    '{...JSON_STRING_HERE...}', //TODO: Modify JSON String here
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "Authorization": "Basic " + btoa(username + ":" + password)
+                        }
+                    }).then(function successCallback(response) {
+                    $log.info(response);
+                    toastService.showToast('Added!'); //show toast notification is successful
+                    finishedUpdatingSuccessfully(true);
+                }, function errorCallback(response) {
+                    toastService.showToast('An error occured.'); //show error notification if unsuccessful
+                    $log.error(response);
+                    finishedUpdatingSuccessfully(true);
+                });
+            }
         })
         .service('dataService', function() {
             nx.graphic.Icons.registerIcon("truck", "resources/moddedtruck.svg", 45, 45); //registers truck icon
@@ -214,7 +250,8 @@
             this.topologyData = undefined;
             this.names = undefined;
             this.sensorData = undefined;
-            this.nodes = [];
+            this.nodes = []; //holds nodes
+            this.groups = []; //holds groups
             this.setTopologyData = function(topoData) { //sets topology data
                 this.topologyData = topoData;
                 angular.copy(_.slice(this.topologyData.nodes,1), this.nodes); //removes anchor by copying data starting from index '1' of the array
@@ -228,10 +265,10 @@
             function ($timeout, $mdSidenav, $log, $mdDialog, $mdToast, gpsService, dataService) {
                 var vm = this;
 
-                vm.geo = false;
+                vm.geo = false; //whether or not geographical mode is active
+                vm.groupsMode = false; //whether or not groups mode is active
                 vm.center = gpsService.center;
                 vm.markers = gpsService.markers;
-
 
                 dataService.topo.on('topologyGenerated', function() { //when topology is generated...
                     dataService.topo.tooltipManager().showNodeTooltip(false); //disable tooltip (node)
@@ -250,6 +287,11 @@
                 //opens right panel
                 vm.openRight = function() {
                     $mdSidenav('right').open();
+                };
+
+                //opens right panel
+                vm.closeRight = function() {
+                    $mdSidenav('right').close();
                 };
 
                 //toggles left panel
@@ -361,13 +403,70 @@
                     var vm = this;
                     vm.waiting = true;
                     vm.nodes = dataService.nodes;
-                    vm.finishedLoadingDmoData = function(data) {
+                    vm.finishedLoadingGroupData = function(data) {
                         vm.waiting = false;
                         vm.targetData = data;
                     };
-                    httpService.getDmoData(vm.finishedLoadingDmoData); //retrieves dmo data
+                    httpService.getDmoData(vm.finishedLoadingGroupData); //retrieves dmo data
                 },
                 controllerAs: 'DmoCtrl'
+            }
+        })
+
+        //directive handles the group cards (left hand side)
+        .directive('groupCard', function($mdDialog) {
+            return {
+                restrict: 'E',
+                templateUrl: '../templates/group-card-template.html',
+                controller: function(httpService, dataService) {
+                    var vm = this;
+                    vm.waiting = true;
+                    vm.groups = dataService.groups;
+                    vm.finishedLoadingGroupData = function(data) {
+                        vm.waiting = false;
+                        angular.copy(data, vm.groups);
+                    };
+                    vm.deleteGroup = function(group) {
+                        //TODO: Update ODL using http service
+                        _.remove(dataService.groups, {name: group.name});
+                    };
+                    vm.addGroup = function() {
+                        //show dialog
+                        $mdDialog.show({
+                            controller: function(httpService) {
+                                var vm = this;
+                                vm.waiting = false;
+                                vm.group = {};
+
+                                //function called when the cancel button ( 'x' in the top right) is clicked
+                                vm.cancel = function() {
+                                    $mdDialog.cancel();
+                                };
+
+                                vm.finishedUpdatingSuccessfully = function(success) {
+                                    vm.waiting = false;
+                                    if (success) {
+                                        vm.cancel();
+                                    }
+                                    dataService.groups.push(vm.group); //adds group card.
+                                };
+
+                                //function called when the update button is clicked
+                                vm.add = function() {
+                                    vm.waiting = true;
+                                    //send a POST with the entered content in the form field
+                                    httpService.addGroupToODL(vm.group, vm.finishedUpdatingSuccessfully);
+                                };
+                            },
+                            controllerAs: 'GroupDialogCtrl',
+                            templateUrl: '../templates/group-dialog-template.html',
+                            parent: angular.element(document.body),
+                            clickOutsideToClose:true
+                        })
+                    };
+                    httpService.getGroupData(vm.finishedLoadingGroupData); //retrieves dmo data
+                },
+                controllerAs: 'GroupCtrl'
             }
         })
 
@@ -387,9 +486,12 @@
 
             // function called when the user clicks 'view sensors'
             vm.loadSensors = function(dmo) {
+                //TODO: Read dmo obd-pid-set-name. eg: dmo['obd-pid-set-name']
+                //TODO: Read obd-pid-set table for the obd-pid-set-name
+                //TODO: Match and load that data into vm.targetData below
                 var dmoNodeId = dmo.dmoNodeId;
                 //searches topologyData nodes and matches dmo ID
-                var sensorData= _.result(_.find(dataService.topologyData.nodes, { 'dmoNodeId': dmoNodeId }), 'obd-pids');
+                var sensorData= _.result(_.find(dataService.topologyData.nodes, { 'dmoNodeId': dmoNodeId }), 'obd-pids'); //TODO: Change but by doing an HTTP Get for table, finding pid-set and associated pids.
                 if (sensorData) { //if there was a match..
                     $log.log('Success! Sensor data loaded!');
                     vm.targetData = processSensorData(sensorData); //set targetData
@@ -397,10 +499,18 @@
                     vm.obdVendorString = dmo.obdVendorString;
                 } else {
                     $log.error('Sensor Data Error.. Yikes!');
-                    vm.targetData = {};
+                    vm.targetData = [];
                     vm.dmoNodeId = "";
                     vm.obdVendorString = "";
                 }
+            };
+
+            vm.loadSensorsForGroup = function(group) {
+                //TODO: Call vm.loadSensors(dmo) function above for every dmo device in this group.
+                console.log('Group: '+group.name);
+                vm.targetData = [];
+                vm.dmoNodeId = "";
+                vm.obdVendorString = "PIDs for "+group.name;
             }
         }]);
 })(angular);
