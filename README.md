@@ -86,3 +86,5 @@ In summary ODL is an application platform abstracting the complexities of a netw
 - [https://developer.cisco.com/site/neXt/](https://developer.cisco.com/site/neXt/)
 
 - [https://github.com/CiscoDevNet/opendaylight-sample-apps](https://github.com/CiscoDevNet/opendaylight-sample-apps)
+
+Copyright (c) 2015 Cisco and/or its affiliates
