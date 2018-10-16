@@ -1,3 +1,5 @@
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/CiscoDevNet/iotvizconf)
+
 # AutoDev - IoT VizConf Application
 
 AutoDev is a solution for managing IoT sensors on mobile vehicles. IoT VizConf (shorthand for IoT Visualization and Configuration) is an AutoDev application running on top of OpenDaylight (ODL) supporting IoT device/sensor visualization and sensor programming. More specifically is provides a web-based user interface (UI) enabling the operator to dynamically discover and render a topology of IoT devices sensors embedded in mobile vehicles. The operator can also configure IOT sensors to perform certain policy-driven actions (e.g. track and report on specific data).
